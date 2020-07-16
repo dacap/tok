@@ -8,8 +8,29 @@ A minimalist C++ library to iterate through string tokens:
 #include "tok.h"
 
 int main() {
-  std::string str = "this,is,a,string";
-  for (auto& tok : tok::split_tokens(str, ',')) {
+  // Prints:
+  // "This"
+  // "is"
+  // "a" "phrase."
+  // "Several"
+  // "whitespaces"
+  // "are"
+  // "ignored."
+  std::string a = "This is a phrase.   Several whitespaces are ignored.";
+  for (auto& tok : tok::split_tokens(a, ' ')) {
+    std::cout << "\"" << tok << "\"\n";
+  }
+
+  // Prints:
+  // "Comma"
+  // "separated"
+  // ""
+  // "values"
+  // ""
+  // ""
+  // "empties are included"
+  std::string b = "Comma,separated,,values,,,empties are included";
+  for (auto& tok : tok::csv(b)) {
     std::cout << "\"" << tok << "\"\n";
   }
 }

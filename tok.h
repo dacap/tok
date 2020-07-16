@@ -8,10 +8,14 @@
 #define TOK_H_INCLUDED
 
 #include <iterator>
+#include <string>
 
 namespace tok {
 
-template<typename T>
+struct ignore_empties { enum { allow_empty = false }; };
+struct include_empties { enum { allow_empty = true }; };
+
+template<typename T, typename EmptyPolicy>
 class token_iterator {
 public:
   using iterator_category = std::forward_iterator_tag;
@@ -36,8 +40,15 @@ public:
   }
 
   token_iterator& operator++() {
-    while (inter_ != end_ && *inter_ == chr_) {
-      ++inter_;
+    if (EmptyPolicy::allow_empty) {
+      if (inter_ != end_ && *inter_ == chr_) {
+        ++inter_;
+      }
+    }
+    else {
+      while (inter_ != end_ && *inter_ == chr_) {
+        ++inter_;
+      }
     }
     begin_ = inter_;
     while (inter_ != end_ && *inter_ != chr_) {
@@ -61,12 +72,11 @@ private:
   value_type str_;
 };
 
-template<typename T>
+template<typename T, typename Empties>
 class token_range {
 public:
-  using iterator = token_iterator<T>;
-  using value_type = T;
   using char_type = typename T::value_type;
+  using iterator = token_iterator<T, Empties>;
 
   token_range(const T& str, char_type chr) : str_(str), chr_(chr) { }
 
@@ -79,8 +89,17 @@ private:
 };
 
 template<typename T>
-token_range<T> split_tokens(T& str, typename T::value_type chr) {
-  return token_range<T>(str, chr);
+token_range<T, ignore_empties>
+split_tokens(const T& str,
+             typename T::value_type chr) {
+  return token_range<T, ignore_empties>(str, chr);
+}
+
+template<typename T>
+token_range<T, include_empties>
+csv(const T& str,
+    typename T::value_type chr = ',') {
+  return token_range<T, include_empties>(str, chr);
 }
 
 } // namespace tok
