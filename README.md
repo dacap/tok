@@ -11,7 +11,8 @@ int main() {
   // Prints:
   // "This"
   // "is"
-  // "a" "phrase."
+  // "a"
+  // "phrase."
   // "Several"
   // "whitespaces"
   // "are"
@@ -22,14 +23,14 @@ int main() {
   }
 
   // Prints:
-  // "Comma"
+  // "In comma"
   // "separated"
   // ""
   // "values"
   // ""
   // ""
   // "empties are included"
-  std::string b = "Comma,separated,,values,,,empties are included";
+  std::string b = "In comma,separated,,values,,,empties are included";
   for (auto& tok : tok::csv(b)) {
     std::cout << "\"" << tok << "\"\n";
   }
