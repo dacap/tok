@@ -54,7 +54,7 @@ public:
     while (inter_ != end_ && *inter_ != chr_) {
       ++inter_;
     }
-    str_ = T(begin_, inter_);
+    str_.assign(begin_, inter_);
     return *this;
   }
 
