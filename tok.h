@@ -1,4 +1,4 @@
-// tok
+// Tok Library
 // Copyright (c) 2020 David Capello
 //
 // This file is released under the terms of the MIT license.
